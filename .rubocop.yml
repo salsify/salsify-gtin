@@ -5,3 +5,6 @@ AllCops:
   Exclude:
   - 'vendor/**/*'
   - 'gemfiles/vendor/**/*'
+
+Style/WordArray:
+  Enabled: false
