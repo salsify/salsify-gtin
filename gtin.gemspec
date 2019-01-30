@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'gtin/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'gtin'
+  spec.name          = 'salsify-gtin'
   spec.version       = GTIN::VERSION
   spec.authors       = ['Salsify, Inc']
   spec.email         = ['engineering@salsify.com']
