@@ -21,7 +21,7 @@ Or install it yourself as:
 This gem is all about validating GTIN-compatible identifiers and converting
 them to a standardized GTIN-14 representation. Supported input types include
 GTIN, EAN-13, UPC-A, UPC-E, ISBN-10, ISBN-13, and ISSN. Inputs must be strings
-containing only digits e.g. '12341238'.
+containing only digits and include the check digit (see examples below).
 
 ### Examples:
 
