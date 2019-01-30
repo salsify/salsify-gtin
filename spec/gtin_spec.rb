@@ -5,7 +5,7 @@ describe GTIN do
 
   context "direct conversions" do
     direct_test_cases = [
-      ['ISSN', '20493639', '09772049363002'],
+      ['ISSN', '20493630', '09772049363002'],
       ['UPC', '123412341230', '00123412341230'],
       ['UPC-A', '123412341247', '00123412341247'],
       ['EAN', '5012345678900', '05012345678900'],
@@ -13,17 +13,17 @@ describe GTIN do
       ['GTIN', '00977204936308', '00977204936308']
     ]
 
-    direct_test_cases.each do |name, value, expected_result|
-      context name do
+    direct_test_cases.each do |id_type, value, expected_result|
+      context id_type do
         subject(:result) do
-          GTIN.to_gtin(name, value)
+          GTIN.to_gtin(id_type, value)
         end
 
         it "converts to GTIN" do
           expect(result).to eq(expected_result)
           expect(result.length).to eq(14)
           expect(result).to include(value[0..-2]) # same contents, different checksum
-          expect(GTIN.valid_checksum?(result)).to be true
+          expect(GTIN.valid_checksum?('GTIN', result)).to be true
         end
       end
     end
