@@ -1,0 +1,10 @@
+inherit_gem:
+  salsify_rubocop: conf/rubocop.yml
+
+AllCops:
+  Exclude:
+  - 'vendor/**/*'
+  - 'gemfiles/vendor/**/*'
+
+Style/WordArray:
+  Enabled: false
