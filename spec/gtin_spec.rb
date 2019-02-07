@@ -3,6 +3,23 @@ describe GTIN do
     expect(GTIN::VERSION).not_to be nil
   end
 
+  describe "#gtin_compatible?" do
+    positives = ['GTIN', 'GTIN-14', 'GTIN14', 'ISBN', 'UPC-E', 'UPCE']
+    negatives = ['UTF', 'NOTUPC', 'GTIN41']
+
+    positives.each do |id_type|
+      it "#{id_type} is GTIN-copmatible" do
+        expect(GTIN.gtin_compatible?(id_type)).to eq(true)
+      end
+    end
+
+    negatives.each do |id_type|
+      it "#{id_type} is not GTIN-copmatible" do
+        expect(GTIN.gtin_compatible?(id_type)).to eq(false)
+      end
+    end
+  end
+
   context "direct conversions" do
     direct_test_cases = [
       ['ISSN', '20493630', '09772049363002'],

@@ -9,17 +9,15 @@ module GTIN
   IssnConverter = Converter.new(:standardize_issn8, :compute_checksum_issn8)
 
   CONVERTER_MAP = {
-    [/(GTIN|EAN)(-8)?/i, 8] => GtinConverter,
-    [/(GTIN|EAN)(-12)?/i, 12] => GtinConverter,
-    [/(GTIN|EAN|ISBN|ISSN)(-13)?/i, 13] => GtinConverter,
-    [/(GTIN|EAN)(-14)?/i, 14] => GtinConverter,
-    [/UPC(-A)?/i, 12] => GtinConverter,
-    [/UPC(-E)?/i, 7] => UpcEConverter,
-    [/ISBN(-10)?/i, 10] => IsbnConverter,
-    [/ISSN(-8)?/i, 8] => IssnConverter
+    [/^(GTIN|EAN)(-?8)?$/i, 8] => GtinConverter,
+    [/^(GTIN|EAN)(-?12)?$/i, 12] => GtinConverter,
+    [/^(GTIN|EAN|ISBN|ISSN)(-?13)?$/i, 13] => GtinConverter,
+    [/^(GTIN|EAN)(-?14)?$/i, 14] => GtinConverter,
+    [/^UPC(-?A)?$/i, 12] => GtinConverter,
+    [/^UPC(-?E)?$/i, 7] => UpcEConverter,
+    [/^ISBN(-?10)?$/i, 10] => IsbnConverter,
+    [/^ISSN(-?8)?$/i, 8] => IssnConverter
   }.freeze
-
-  GTIN_COMPATIBLE_ID_TYPES = %w(UPC GTIN EAN ISSN ISBN).freeze
 
   GtinValidationError = Class.new(StandardError)
 
@@ -112,5 +110,9 @@ module GTIN
   # can't be done directly; convert to upc-a first
   def compute_checksum_upce(unchecked_upce)
     standardize('UPC', unchecked_upce + '0', validate_checksum: false)[-1]
+  end
+
+  def gtin_compatible?(id_type)
+    CONVERTER_MAP.keys.map(&:first).any? { |r| r.match?(id_type) }
   end
 end
