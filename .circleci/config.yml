@@ -3,7 +3,11 @@ jobs:
   build:
     docker:
       - image: salsify/ruby_ci:2.5.1
-    working_directory: ~/gtin
+    environment:
+      RACK_ENV: "test"
+      RAILS_ENV: "test"
+      CIRCLE_TEST_REPORTS: "test-results"
+    working_directory: ~/salsify-gtin
     steps:
       - checkout
       - restore_cache:
@@ -30,4 +34,4 @@ jobs:
           command: |
             bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec/junit.xml --format progress spec
       - store_test_results:
-          path: 'test-results'
+          path: $CIRCLE_TEST_REPORTS
