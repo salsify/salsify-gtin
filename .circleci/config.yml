@@ -8,7 +8,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-gems-ruby-2.5.1-{{ checksum "salsify-jira.gemspec" }}-{{ checksum "Gemfile.lock" }}
+            - v1-gems-ruby-2.5.1-{{ checksum "salsify-gtin.gemspec" }}-{{ checksum "Gemfile.lock" }}
             - v1-gems-ruby-2.5.1-
       - run:
           name: Install Gems
@@ -18,7 +18,7 @@ jobs:
               bundle clean
             fi
       - save_cache:
-          key: v1-gems-ruby-2.5.1-{{ checksum "salsify-jira.gemspec" }}-{{ checksum "Gemfile.lock" }}
+          key: v1-gems-ruby-2.5.1-{{ checksum "salsify-gtin.gemspec" }}-{{ checksum "Gemfile.lock" }}
           paths:
             - "vendor/bundle"
             - "gemfiles/vendor"
