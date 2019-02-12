@@ -3,6 +3,16 @@ describe GTIN do
     expect(GTIN::VERSION).not_to be nil
   end
 
+  describe "#valid_checksum?" do
+    it "doesn't crash for invalid id types" do
+      expect(GTIN.valid_checksum?('POTATO', '123412341230')).to be(false)
+    end
+
+    it "doesn't crash for invalid values" do
+      expect(GTIN.valid_checksum?('ISBN', '6')).to be(false)
+    end
+  end
+
   describe "#gtin_compatible?" do
     positives = ['GTIN', 'GTIN-14', 'GTIN14', 'ISBN', 'UPC-E', 'UPCE']
     negatives = ['UTF', 'NOTUPC', 'GTIN41']
