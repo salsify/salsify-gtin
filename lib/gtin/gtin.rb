@@ -31,8 +31,13 @@ module GTIN
   end
 
   def standardize(id_type, value, validate_checksum: true)
-    fail_on_invalid_checksum(id_type, value) if validate_checksum
     converter = get_converter(id_type, value.length)
+    if converter.nil?
+      raise GtinValidationError.new("#{id_type} standardization failed: no gtin converter for value with length #{value.length}")
+    end
+
+    fail_on_invalid_checksum(id_type, value) if validate_checksum
+
     send(converter.standardizer, value)
   end
 
@@ -41,7 +46,8 @@ module GTIN
       return converter if type_matcher.match?(id_type) && value_length == length
     end
 
-    raise GtinValidationError.new("No gtin converter found for #{id_type} with length #{value_length}")
+    # rubocop warns about this, but it's needed because #each returns its owner
+    return nil
   end
 
   def standardize_gtin(gtin)
@@ -76,12 +82,18 @@ module GTIN
 
   def valid_checksum?(id_type, identifier)
     converter = get_converter(id_type, identifier.length)
+    return false if converter.nil?
+
     expected_checksum = send(converter.checksum_computer, identifier[0..-2])
     identifier[-1] == expected_checksum
   end
 
   def fail_on_invalid_checksum(id_type, identifier)
     converter = get_converter(id_type, identifier.length)
+    if converter.nil?
+      raise GtinValidationError.new("Invalid checksum: gtin converter not found for #{id_type} with length #{value.length}")
+    end
+
     expected_checksum = send(converter.checksum_computer, identifier[0..-2])
     actual_checksum = identifier[-1]
     return if actual_checksum == expected_checksum
