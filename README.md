@@ -5,7 +5,7 @@
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'gtin'
+gem 'salsify-gtin'
 ```
 
 And then execute:
@@ -14,7 +14,11 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install gtin
+    $ gem install salsify-gtin
+
+And load it with:
+
+    $ require 'gtin'
 
 ## Usage
 
@@ -28,12 +32,16 @@ containing only digits and include the check digit (see examples below).
 ```
 # UPC-A
 GTIN.to_gtin('UPC', '123412341230') => '00123412341230'
+GTIN.compute_checksum_gtin('12341234123') =>'0' # UPC-A is a subset of GTIN
+GTIN.compute_checksum_gtin('0012341234123') =>'0'
 
 # UPC-E
 GTIN.to_gtin('UPC', '1236432') => '00012300000642'
 
 # ISBN-10
 GTIN.to_gtin('ISBN', '0306406152') => '09780306406157'
+GTIN.compute_checksum_isbn10('030640615') =>'2'
+GTIN.compute_checksum_gtin('0978030640615') =>'7' # ISBN-13 is a subset of GTIN
 
 # ISBN-13 with an incorrect check digit
 GTIN.to_gtin('ISBN', '9780306406150') => GtinValidationError (invalid checksum)
